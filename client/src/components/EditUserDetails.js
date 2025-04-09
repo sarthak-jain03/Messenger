@@ -9,60 +9,59 @@ import toast from "react-hot-toast"
 import { setUser } from '../redux/userSlice'
 
 const EditUserDetails = ({onClose, user}) => {
-    const [data, setData] = useState({
-        name: user?.name,
-        profile_pic: user?.profile_pic
+    const [data,setData] = useState({
+        
+        name : user?.user,
+        profile_pic : user?.profile_pic
     })
-
     const uploadPhotoRef = useRef()
     const dispatch = useDispatch()
 
-
     useEffect(()=>{
-        setData((prev)=>{
+        setData((preve)=>{
             return{
-                ...prev,
+                ...preve,
                 ...user
             }
         })
     },[user])
 
-    const handleOnChange = (e) => {
-        const {name, value} = e.target
+    const handleOnChange = (e)=>{
+        const { name, value } = e.target
 
-        setData((prev) => {
+        setData((preve)=>{
             return{
-                ...prev,
-                [name]: value
+                ...preve,
+                [name] : value
             }
         })
     }
 
+    const handleOpenUploadPhoto = (e)=>{
+        e.preventDefault()
+        e.stopPropagation()
 
-    const handleUploadPhoto = async(e) => {
+        uploadPhotoRef.current.click()
+    }
+    const handleUploadPhoto = async(e)=>{
         const file = e.target.files[0]
 
         const uploadPhoto = await uploadFile(file)
-    
-        setData((prev) => {
-          return{
-            ...prev,
-            profile_pic: uploadPhoto?.url
-          }
+
+        setData((preve)=>{
+        return{
+            ...preve,
+            profile_pic : uploadPhoto?.url
+        }
         })
     }
 
-    const handleOpenUploadPhoto = (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-        uploadPhotoRef.current.click()
-    }
-
-    const handleSubmit = async(e) => {
+    const handleSubmit = async(e)=>{
         e.preventDefault()
         e.stopPropagation()
         try {
             const URL = `${process.env.REACT_APP_BACKEND_URL}/api/update-user`
+
             const response = await axios({
                 method : 'post',
                 url : URL,

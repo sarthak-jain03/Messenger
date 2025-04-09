@@ -1,33 +1,44 @@
-const express = require("express")
-const registerUser = require("../controller/registerUser")
-const checkEmail = require("../controller/checkEmail")
-const checkPassword = require("../controller/checkPassword")
-const getUserDetailsFromToken = require("../helpers/getUserDetailsFromToken")
-const userDetails = require("../controller/userDetails")
-const logout = require("../controller/logout")
-const updateUserDetails = require("../controller/updateUserDetails")
-const searchUserSearchbox = require("../controller/searchUserSearchbox")
-const router = express.Router()
+const express = require("express");
+const registerUser = require("../controller/registerUser");
+const checkEmail = require("../controller/checkEmail");
+const checkPassword = require("../controller/checkPassword");
+const getUserDetailsFromToken = require("../helpers/getUserDetailsFromToken");
+const userDetails = require("../controller/userDetails");
+const logout = require("../controller/logout");
+const updateUserDetails = require("../controller/updateUserDetails");
+const searchUserSearchbox = require("../controller/searchUserSearchbox");
 
-// creating user api
-router.post('/register', registerUser)
+// New controllers
+const forgotPassword = require("../controller/forgotPassword");
+const resetPassword = require("../controller/resetPassword");
 
-// check user email
-router.post('/email', checkEmail)
+const router = express.Router();
 
-//check password
-router.post('/password', checkPassword)
+// Register user
+router.post('/register', registerUser);
 
-// Login user details
-router.get('/user-details', userDetails)
+// Check email
+router.post('/email', checkEmail);
+
+// Check password
+router.post('/password', checkPassword);
+
+// Get user details from token
+router.get('/user-details', userDetails);
 
 // Logout user
-router.get('/logout', logout)
+router.get('/logout', logout);
 
-// Update User-Details
-router.post('/update-user', updateUserDetails)
+// Update user details
+router.post('/update-user', updateUserDetails);
 
-// search user inside the searchbox
-router.post('/search-user', searchUserSearchbox)
+// Search user in searchbox
+router.post('/search-user', searchUserSearchbox);
 
-module.exports = router
+// Forgot password
+router.post('/forgot-password', forgotPassword);
+
+// Reset password using token
+router.post('/reset-password/:token', resetPassword);
+
+module.exports = router;
