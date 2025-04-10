@@ -22,9 +22,16 @@ const ResetPasswordPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-
-    const URL = `${process.env.REACT_APP_BACKEND_URL}/reset-password/${token}`;
-
+  
+    const URL = `${process.env.REACT_APP_BACKEND_URL}/api/reset-password/${token}`
+    
+    if (!data.newPassword) {
+      return toast.error('Please enter a new password');
+    }
+    if (data.newPassword.length < 6) {
+      return toast.error('Password must be at least 6 characters long');
+    }
+  
     try {
       const response = await axios.post(URL, {
         newPassword: data.newPassword
@@ -32,12 +39,14 @@ const ResetPasswordPage = () => {
       
       toast.success(response.data.message);
       setData({ newPassword: '' });
-
-      setTimeout(() => navigate('/email'), 1500); // Redirect to login/email page
+  
+      setTimeout(() => navigate('/email'), 1500);
     } catch (error) {
+      console.log(error);
       toast.error(error?.response?.data?.message || 'Something went wrong');
     }
   };
+  
 
   return (
     <div className='mt-5'>
